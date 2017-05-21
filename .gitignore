@@ -1,3 +1,9 @@
+__history
+*.~*
+*.local
+*.stat
+*.dsk
+
 # Compiled Object files
 *.slo
 *.lo

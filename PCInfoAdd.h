@@ -11,5 +11,8 @@
 #include "SystemInfo.h"
 
 // ---------------------------------------------------------------------------
-void GetSystemInfo(TStrings* StringList, P3tr0viCh::TSystemInfo *SystemInfo);
+void GetSystemInfo(TStrings* StringList, P3tr0viCh::TSystemInfo *SystemInfo,
+	bool UseRusCaptions = true);
+
+String GetDateTimeNow();
 #endif

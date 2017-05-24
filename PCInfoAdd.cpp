@@ -7,7 +7,8 @@
 #pragma package(smart_init)
 
 // ---------------------------------------------------------------------------
-void StringListAdd(TStrings* Strings, int Level, String Text) {
+void StringListAdd(TStrings* Strings, int Level, String Text,
+	bool UseRusCaptions) {
 	String S = "";
 
 	for (int i = 0; i < Level; i++) {
@@ -15,7 +16,7 @@ void StringListAdd(TStrings* Strings, int Level, String Text) {
 	}
 
 	if (IsEmpty(Text)) {
-		S += "Неизвестно";
+		S += UseRusCaptions ? "Неизвестно" : "Unknown";
 	}
 	else {
 		S += Text;
@@ -63,55 +64,88 @@ String SystemBoard(P3tr0viCh::TSystemInfo * SystemInfo) {
 }
 
 // ---------------------------------------------------------------------------
-void GetSystemInfo(TStrings* StringList, P3tr0viCh::TSystemInfo *SystemInfo) {
-	StringListAdd(StringList, 0, "Имя компьютера");
-	StringListAdd(StringList, 1, SystemInfo->ComputerName);
+void GetSystemInfo(TStrings* StringList, P3tr0viCh::TSystemInfo *SystemInfo,
+	bool UseRusCaptions) {
+	StringListAdd(StringList, 0, UseRusCaptions ? "Имя компьютера" :
+		"Host name", UseRusCaptions);
+	StringListAdd(StringList, 1, SystemInfo->ComputerName, UseRusCaptions);
 
 	if (SystemInfo->IPAddressList->Count > 1) {
-		StringListAdd(StringList, 0, "IP адреса");
+		StringListAdd(StringList, 0, UseRusCaptions ? "IP адреса" :
+			"IP addreses", UseRusCaptions);
 	}
 	else {
-		StringListAdd(StringList, 0, "IP адрес");
+		StringListAdd(StringList, 0, UseRusCaptions ? "IP адрес" : "IP address",
+			UseRusCaptions);
 	}
 	for (int i = 0; i < SystemInfo->IPAddressList->Count; i++) {
-		StringListAdd(StringList, 1, SystemInfo->IPAddressList->Strings[i]);
+		StringListAdd(StringList, 1, SystemInfo->IPAddressList->Strings[i],
+			UseRusCaptions);
 	}
 
-	StringListAdd(StringList, 0, "Операционная система");
-	StringListAdd(StringList, 1, WindowsVersion(SystemInfo));
+	StringListAdd(StringList, 0, UseRusCaptions ? "Операционная система" :
+		"Operating system", UseRusCaptions);
+	StringListAdd(StringList, 1, WindowsVersion(SystemInfo), UseRusCaptions);
 
-	StringListAdd(StringList, 0, "Системная плата");
-	StringListAdd(StringList, 1, SystemBoard(SystemInfo));
+	StringListAdd(StringList, 0, UseRusCaptions ? "Системная плата" :
+		"Motherboard", UseRusCaptions);
+	StringListAdd(StringList, 1, SystemBoard(SystemInfo), UseRusCaptions);
 
-	StringListAdd(StringList, 0, "Процессор");
-	StringListAdd(StringList, 1, SystemInfo->ProcessorName);
+	StringListAdd(StringList, 0, UseRusCaptions ? "Процессор" : "CPU",
+		UseRusCaptions);
+	StringListAdd(StringList, 1, SystemInfo->ProcessorName, UseRusCaptions);
 
-	StringListAdd(StringList, 0, "Оперативная память");
-	StringListAdd(StringList, 1, FormatBytes(SystemInfo->PhysMemory));
+	TStrings *ByteNames = new TStringList();
+	if (!UseRusCaptions) {
+		ByteNames->Add("b");
+		ByteNames->Add("Kb");
+		ByteNames->Add("Mb");
+		ByteNames->Add("Gb");
+		ByteNames->Add("Tb");
+	}
 
-	StringListAdd(StringList, 0, "Логические диски");
+	StringListAdd(StringList, 0, UseRusCaptions ? "Оперативная память" : "RAM",
+		UseRusCaptions);
+	StringListAdd(StringList, 1, FormatBytes(SystemInfo->PhysMemory, ByteNames),
+		UseRusCaptions);
+
+	StringListAdd(StringList, 0, UseRusCaptions ? "Логические диски" :
+		"Logical drives", UseRusCaptions);
 	for (int i = 0; i < SystemInfo->LogicalDrives->Count; i++) {
 		P3tr0viCh::TLogicalDrive* LogicalDrive =
 			(P3tr0viCh::TLogicalDrive*) SystemInfo->LogicalDrives->Items[i];
 
 		if (IsEmpty(LogicalDrive->Label)) {
 			StringListAdd(StringList, 1,
-				Format("%s:", ARRAYOFCONST((LogicalDrive->Letter))));
+				Format("%s:", ARRAYOFCONST((LogicalDrive->Letter))),
+				UseRusCaptions);
 		}
 		else {
 			StringListAdd(StringList, 1,
 				Format("%s: (%s)", ARRAYOFCONST((LogicalDrive->Letter,
-				LogicalDrive->Label))));
+				LogicalDrive->Label))), UseRusCaptions);
 		}
-		StringListAdd(StringList, 2, Format("Объём: %s; Свободно: %s (%d %%)",
-			ARRAYOFCONST((FormatBytes(LogicalDrive->Total),
-			FormatBytes(LogicalDrive->Free),
+
+		String F = UseRusCaptions ? "Объём: %s; Свободно: %s (%d %%)" :
+			"Total: %s; Free: %s (%d %%)";
+
+		StringListAdd(StringList, 2,
+			Format(F, ARRAYOFCONST((FormatBytes(LogicalDrive->Total, ByteNames),
+			FormatBytes(LogicalDrive->Free, ByteNames),
 			(int)Round(((Extended) LogicalDrive->Free / (Extended)
-			LogicalDrive->Total) * 100)))));
+			LogicalDrive->Total) * 100)))), UseRusCaptions);
 	}
 
 	if (!IsEmpty(SystemInfo->PrinterName)) {
-		StringListAdd(StringList, 0, "Принтер");
-		StringListAdd(StringList, 1, SystemInfo->PrinterName);
+		StringListAdd(StringList, 0, UseRusCaptions ? "Принтер" : "Printer",
+			UseRusCaptions);
+		StringListAdd(StringList, 1, SystemInfo->PrinterName, UseRusCaptions);
 	}
+
+	ByteNames->Free();
+}
+
+// ---------------------------------------------------------------------------
+String GetDateTimeNow() {
+	return FormatDateTime("yyyy.mm.dd hh-mm-ss", Now());
 }

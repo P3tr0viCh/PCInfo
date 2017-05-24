@@ -30,11 +30,13 @@ __published: // IDE-managed Components
 	TToolButton *tbtnClose;
 	TImageList *ImageList;
 	TSaveDialog *SaveDialog;
+	TToolButton *tbtnAbout;
 
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall tbtnCloseClick(TObject *Sender);
 	void __fastcall tbtnSaveClick(TObject *Sender);
+	void __fastcall tbtnAboutClick(TObject *Sender);
 
 private: // User declarations
 		P3tr0viCh::TSystemInfo *SystemInfo;

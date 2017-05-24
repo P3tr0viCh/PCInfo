@@ -8,6 +8,8 @@
 #include "UtilsStr.h"
 #include "UtilsMisc.h"
 
+#include "AboutFrm.h"
+
 #include "PCInfoAdd.h"
 
 // ---------------------------------------------------------------------------
@@ -59,11 +61,15 @@ void __fastcall TMain::tbtnCloseClick(TObject *Sender) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TMain::tbtnSaveClick(TObject *Sender) {
-	SaveDialog->FileName = SystemInfo->ComputerName + " " + FormatDateTime
-		("yyyy.mm.dd hh-mm-ss", Now());
+	SaveDialog->FileName = SystemInfo->ComputerName + " " + GetDateTimeNow();
 
 	if (SaveDialog->Execute()) {
 		Memo->Lines->SaveToFile(SaveDialog->FileName);
 	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TMain::tbtnAboutClick(TObject *Sender) {
+	ShowAbout(16);
 }
 // ---------------------------------------------------------------------------

@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{47876317-3C19-4607-9E44-C88103532AA7}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="PCInfo.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="PCInfoCmd.cbproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="PCInfo">
+        <MSBuild Projects="PCInfo.cbproj"/>
+    </Target>
+    <Target Name="PCInfo:Clean">
+        <MSBuild Projects="PCInfo.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PCInfo:Make">
+        <MSBuild Projects="PCInfo.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="PCInfoCmd">
+        <MSBuild Projects="PCInfoCmd.cbproj"/>
+    </Target>
+    <Target Name="PCInfoCmd:Clean">
+        <MSBuild Projects="PCInfoCmd.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PCInfoCmd:Make">
+        <MSBuild Projects="PCInfoCmd.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="PCInfo;PCInfoCmd"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="PCInfo:Clean;PCInfoCmd:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="PCInfo:Make;PCInfoCmd:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

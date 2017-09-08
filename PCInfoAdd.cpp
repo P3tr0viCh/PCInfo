@@ -109,31 +109,46 @@ void GetSystemInfo(TStrings* StringList, P3tr0viCh::TSystemInfo *SystemInfo,
 	StringListAdd(StringList, 1, FormatBytes(SystemInfo->PhysMemory, ByteNames),
 		UseRusCaptions);
 
+	// TODO: выводить список логических дисков в строке физического диска
+
 	StringListAdd(StringList, 0, UseRusCaptions ? "Логические диски" :
 		"Logical drives", UseRusCaptions);
+
+	String F = UseRusCaptions ? "Объём: %s; Свободно: %s (%d %%)" :
+		"Total: %s; Free: %s (%d %%); Drive #%d";
 	for (int i = 0; i < SystemInfo->LogicalDrives->Count; i++) {
 		P3tr0viCh::TLogicalDrive* LogicalDrive =
 			(P3tr0viCh::TLogicalDrive*) SystemInfo->LogicalDrives->Items[i];
 
 		if (IsEmpty(LogicalDrive->Label)) {
-			StringListAdd(StringList, 1,
-				Format("%s:", ARRAYOFCONST((LogicalDrive->Letter))),
-				UseRusCaptions);
+			StringListAdd(StringList, 1, Format("%s:; Диск №%d",
+				ARRAYOFCONST((LogicalDrive->Letter,
+				LogicalDrive->PhysicalDriveNum + 1))), UseRusCaptions);
 		}
 		else {
-			StringListAdd(StringList, 1,
-				Format("%s: (%s)", ARRAYOFCONST((LogicalDrive->Letter,
-				LogicalDrive->Label))), UseRusCaptions);
+			StringListAdd(StringList, 1, Format("%s: (%s); Диск №%d",
+				ARRAYOFCONST((LogicalDrive->Letter, LogicalDrive->Label,
+				LogicalDrive->PhysicalDriveNum + 1))), UseRusCaptions);
 		}
-
-		String F = UseRusCaptions ? "Объём: %s; Свободно: %s (%d %%)" :
-			"Total: %s; Free: %s (%d %%)";
 
 		StringListAdd(StringList, 2,
 			Format(F, ARRAYOFCONST((FormatBytes(LogicalDrive->Total, ByteNames),
 			FormatBytes(LogicalDrive->Free, ByteNames),
 			(int)Round(((Extended) LogicalDrive->Free / (Extended)
 			LogicalDrive->Total) * 100)))), UseRusCaptions);
+	}
+
+	StringListAdd(StringList, 0, UseRusCaptions ? "Физические диски" :
+		"Physical drives", UseRusCaptions);
+
+	F = UseRusCaptions ? "Диск №%d: %s (%s)" : "Drive #%d: %s (%s)";
+	for (int i = 0; i < SystemInfo->PhysicalDrives->Count; i++) {
+		P3tr0viCh::TPhysicalDrive* PhysicalDrive =
+			(P3tr0viCh::TPhysicalDrive*) SystemInfo->PhysicalDrives->Items[i];
+
+		StringListAdd(StringList, 1,
+			Format(F, ARRAYOFCONST((i + 1, PhysicalDrive->Product,
+			FormatBytes(PhysicalDrive->Size, ByteNames)))), UseRusCaptions);
 	}
 
 	if (!IsEmpty(SystemInfo->PrinterName)) {

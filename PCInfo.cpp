@@ -11,13 +11,18 @@
 #include "SystemInfo.h"
 
 #include "PCInfoAdd.h"
+#include "PCInfoStrings.h"
 
 // ---------------------------------------------------------------------------
 USEFORM("PCInfoMain.cpp", Main);
 
+TPCInfoStrings *PCInfoStrings;
+
+P3tr0viCh::TSystemInfo *SystemInfo;
+
+// ---------------------------------------------------------------------------
 void SaveToFile(String FileName) {
 	TStrings *Strings = new TStringList();
-	P3tr0viCh::TSystemInfo *SystemInfo = new P3tr0viCh::TSystemInfo();
 
 	try {
 		SystemInfo->Update();
@@ -43,22 +48,35 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int) {
 	try {
 		Application->Initialize();
 		Application->MainFormOnTaskBar = true;
-		Application->Title = "Информация о системе";
 
-		if (ParamCount() > 0) {
-			String Param = AnsiUpperCase(ParamStr(1));
+		PCInfoStrings = new TPCInfoStrings(FindCmdLineSwitch("E") ?
+			LANGUAGE_ENG : LANGUAGE_DEFAULT);
 
-			if ((Param.Length() > 1) && (Param[1] == '/' || Param[1] == '-')) {
-				if (Param[2] == 'F') {
-					SaveToFile(NULL);
+		SystemInfo = new P3tr0viCh::TSystemInfo();
 
-					return 0;
+		try {
+			Application->Title = PCInfoStrings->Get(APPLICATION_TITLE);
+
+			if (ParamCount() > 0) {
+				String Param = AnsiUpperCase(ParamStr(1));
+
+				if ((Param.Length() > 1) && (Param[1] == '/' ||
+					Param[1] == '-')) {
+					if (Param[2] == 'F') {
+						SaveToFile(NULL);
+
+						return 0;
+					}
 				}
 			}
-		}
 
-		Application->CreateForm(__classid(TMain), &Main);
-		Application->Run();
+			Application->CreateForm(__classid(TMain), &Main);
+			Application->Run();
+		}
+		__finally {
+			SystemInfo->Free();
+			PCInfoStrings->Free();
+		}
 	}
 	catch (Exception &exception) {
 		Application->ShowException(&exception);
@@ -71,6 +89,7 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int) {
 			Application->ShowException(&exception);
 		}
 	}
+
 	return 0;
 }
 // ---------------------------------------------------------------------------

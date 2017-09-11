@@ -3,12 +3,15 @@
 #pragma hdrstop
 
 #include "PCInfoAdd.h"
+#include "PCInfoStrings.h"
+
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
 
+extern TPCInfoStrings *PCInfoStrings;
+
 // ---------------------------------------------------------------------------
-void StringListAdd(TStrings* Strings, int Level, String Text,
-	bool UseRusCaptions) {
+void StringListAdd(TStrings* Strings, int Level, String Text) {
 	String S = "";
 
 	for (int i = 0; i < Level; i++) {
@@ -16,7 +19,7 @@ void StringListAdd(TStrings* Strings, int Level, String Text,
 	}
 
 	if (IsEmpty(Text)) {
-		S += UseRusCaptions ? "Неизвестно" : "Unknown";
+		S += PCInfoStrings->Get(INFO_TEXT_UNKNOWN);
 	}
 	else {
 		S += Text;
@@ -27,14 +30,14 @@ void StringListAdd(TStrings* Strings, int Level, String Text,
 
 // ---------------------------------------------------------------------------
 String WindowsVersion(P3tr0viCh::TSystemInfo *SystemInfo) {
-	String SWindowsVersion;
-	if (SystemInfo->IsWindows64Bit) {
-		SWindowsVersion = "x64";
+	String SWindowsProductName = SystemInfo->WindowsProductName;
+	if (IsEmpty(SWindowsProductName)) {
+		return NULL;
 	}
-	else {
-		SWindowsVersion = "x32";
-	}
-	return ConcatStrings(ConcatStrings(SystemInfo->WindowsProductName,
+
+	String SWindowsVersion = SystemInfo->IsWindows64Bit ? "x64" : "x32";
+
+	return ConcatStrings(ConcatStrings(SWindowsProductName,
 		SystemInfo->WindowsCSDVersion, SPACE),
 		"(" + SWindowsVersion + ")", SPACE);
 }
@@ -64,97 +67,140 @@ String SystemBoard(P3tr0viCh::TSystemInfo * SystemInfo) {
 }
 
 // ---------------------------------------------------------------------------
-void GetSystemInfo(TStrings* StringList, P3tr0viCh::TSystemInfo *SystemInfo,
-	bool UseRusCaptions) {
-	StringListAdd(StringList, 0, UseRusCaptions ? "Имя компьютера" :
-		"Host name", UseRusCaptions);
-	StringListAdd(StringList, 1, SystemInfo->ComputerName, UseRusCaptions);
-
-	if (SystemInfo->IPAddressList->Count > 1) {
-		StringListAdd(StringList, 0, UseRusCaptions ? "IP адреса" :
-			"IP addreses", UseRusCaptions);
-	}
-	else {
-		StringListAdd(StringList, 0, UseRusCaptions ? "IP адрес" : "IP address",
-			UseRusCaptions);
-	}
-	for (int i = 0; i < SystemInfo->IPAddressList->Count; i++) {
-		StringListAdd(StringList, 1, SystemInfo->IPAddressList->Strings[i],
-			UseRusCaptions);
-	}
-
-	StringListAdd(StringList, 0, UseRusCaptions ? "Операционная система" :
-		"Operating system", UseRusCaptions);
-	StringListAdd(StringList, 1, WindowsVersion(SystemInfo), UseRusCaptions);
-
-	StringListAdd(StringList, 0, UseRusCaptions ? "Системная плата" :
-		"Motherboard", UseRusCaptions);
-	StringListAdd(StringList, 1, SystemBoard(SystemInfo), UseRusCaptions);
-
-	StringListAdd(StringList, 0, UseRusCaptions ? "Процессор" : "CPU",
-		UseRusCaptions);
-	StringListAdd(StringList, 1, SystemInfo->ProcessorName, UseRusCaptions);
+void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
+	String S1, S2, S3;
 
 	TStrings *ByteNames = new TStringList();
-	if (!UseRusCaptions) {
-		ByteNames->Add("b");
-		ByteNames->Add("Kb");
-		ByteNames->Add("Mb");
-		ByteNames->Add("Gb");
-		ByteNames->Add("Tb");
+
+	ByteNames->Add(PCInfoStrings->Get(BYTES_B));
+	ByteNames->Add(PCInfoStrings->Get(BYTES_KB));
+	ByteNames->Add(PCInfoStrings->Get(BYTES_MB));
+	ByteNames->Add(PCInfoStrings->Get(BYTES_GB));
+	ByteNames->Add(PCInfoStrings->Get(BYTES_TB));
+
+	// ----------- HOST NAME -------------------------------------------------
+
+	StringListAdd(StringList, 0, PCInfoStrings->Get(INFO_CAPTION_HOSTNAME));
+	StringListAdd(StringList, 1, SystemInfo->ComputerName);
+
+	// ----------- IP --------------------------------------------------------
+
+	if (SystemInfo->IPAddressList->Count > 1) {
+		StringListAdd(StringList, 0,
+			PCInfoStrings->Get(INFO_CAPTION_IP_ADDRESS_MULTIPLE));
 	}
+	else {
+		StringListAdd(StringList, 0,
+			PCInfoStrings->Get(INFO_CAPTION_IP_ADDRESS_SINGLE));
+	}
+	if (SystemInfo->IPAddressList->Count > 0) {
+		for (int i = 0; i < SystemInfo->IPAddressList->Count; i++) {
+			StringListAdd(StringList, 1, SystemInfo->IPAddressList->Strings[i]);
+		}
+	}
+	else {
+		StringListAdd(StringList, 1, NULL);
+	}
+	// ----------- WINDOWS VERSION -------------------------------------------
 
-	StringListAdd(StringList, 0, UseRusCaptions ? "Оперативная память" : "RAM",
-		UseRusCaptions);
-	StringListAdd(StringList, 1, FormatBytes(SystemInfo->PhysMemory, ByteNames),
-		UseRusCaptions);
+	StringListAdd(StringList, 0,
+		PCInfoStrings->Get(INFO_CAPTION_WINDOWS_VERSION));
+	StringListAdd(StringList, 1, WindowsVersion(SystemInfo));
 
-	// TODO: выводить список логических дисков в строке физического диска
+	// ----------- MOTHERBOARD -----------------------------------------------
 
-	StringListAdd(StringList, 0, UseRusCaptions ? "Логические диски" :
-		"Logical drives", UseRusCaptions);
+	StringListAdd(StringList, 0, PCInfoStrings->Get(INFO_CAPTION_MOTHERBOARD));
+	StringListAdd(StringList, 1, SystemBoard(SystemInfo));
 
-	String F = UseRusCaptions ? "Объём: %s; Свободно: %s (%d %%)" :
-		"Total: %s; Free: %s (%d %%); Drive #%d";
+	// ----------- CPU -------------------------------------------------------
+
+	StringListAdd(StringList, 0, PCInfoStrings->Get(INFO_CAPTION_CPU));
+	StringListAdd(StringList, 1, SystemInfo->ProcessorName);
+
+	// ----------- RAM -------------------------------------------------------
+
+	StringListAdd(StringList, 0, PCInfoStrings->Get(INFO_CAPTION_RAM));
+	StringListAdd(StringList, 1, FormatBytes(SystemInfo->PhysMemory,
+		ByteNames));
+
+	// ----------- LOGICAL DRIVES --------------------------------------------
+
+	StringListAdd(StringList, 0,
+		PCInfoStrings->Get(INFO_CAPTION_LOGICAL_DRIVES));
+
+	P3tr0viCh::TLogicalDrive* LogicalDrive;
+
+	S1 = PCInfoStrings->Get(INFO_TEXT_LOGICAL_DRIVES_CAPTION_WITHOUT_NAME);
+	S2 = PCInfoStrings->Get(INFO_TEXT_LOGICAL_DRIVES_CAPTION_WITH_NAME);
+	S3 = PCInfoStrings->Get(INFO_TEXT_LOGICAL_DRIVES_INFO);
+
 	for (int i = 0; i < SystemInfo->LogicalDrives->Count; i++) {
-		P3tr0viCh::TLogicalDrive* LogicalDrive =
-			(P3tr0viCh::TLogicalDrive*) SystemInfo->LogicalDrives->Items[i];
+		LogicalDrive = (P3tr0viCh::TLogicalDrive*)
+			SystemInfo->LogicalDrives->Items[i];
 
 		if (IsEmpty(LogicalDrive->Label)) {
-			StringListAdd(StringList, 1, Format("%s:; Диск №%d",
-				ARRAYOFCONST((LogicalDrive->Letter,
-				LogicalDrive->PhysicalDriveNum + 1))), UseRusCaptions);
+			StringListAdd(StringList, 1,
+				Format(S1, ARRAYOFCONST((LogicalDrive->Letter))));
 		}
 		else {
-			StringListAdd(StringList, 1, Format("%s: (%s); Диск №%d",
-				ARRAYOFCONST((LogicalDrive->Letter, LogicalDrive->Label,
-				LogicalDrive->PhysicalDriveNum + 1))), UseRusCaptions);
+			StringListAdd(StringList, 1,
+				Format(S2, ARRAYOFCONST((LogicalDrive->Letter,
+				LogicalDrive->Label))));
 		}
 
 		StringListAdd(StringList, 2,
-			Format(F, ARRAYOFCONST((FormatBytes(LogicalDrive->Total, ByteNames),
-			FormatBytes(LogicalDrive->Free, ByteNames),
+			Format(S3, ARRAYOFCONST((FormatBytes(LogicalDrive->Total,
+			ByteNames), FormatBytes(LogicalDrive->Free, ByteNames),
 			(int)Round(((Extended) LogicalDrive->Free / (Extended)
-			LogicalDrive->Total) * 100)))), UseRusCaptions);
+			LogicalDrive->Total) * 100)))));
 	}
 
-	StringListAdd(StringList, 0, UseRusCaptions ? "Физические диски" :
-		"Physical drives", UseRusCaptions);
+	// ----------- PHYSICAL DRIVES -------------------------------------------
 
-	F = UseRusCaptions ? "Диск №%d: %s (%s)" : "Drive #%d: %s (%s)";
+	StringListAdd(StringList, 0,
+		PCInfoStrings->Get(INFO_CAPTION_PHYSICAL_DRIVES));
+
+	P3tr0viCh::TPhysicalDrive* PhysicalDrive;
+
+	S1 = PCInfoStrings->Get(INFO_TEXT_PHYSICAL_DRIVES_CAPTION);
+	S2 = PCInfoStrings->Get(INFO_TEXT_PHYSICAL_DRIVES_INFO);
+
+	String LogicalDrives;
+
 	for (int i = 0; i < SystemInfo->PhysicalDrives->Count; i++) {
-		P3tr0viCh::TPhysicalDrive* PhysicalDrive =
-			(P3tr0viCh::TPhysicalDrive*) SystemInfo->PhysicalDrives->Items[i];
+		PhysicalDrive = (P3tr0viCh::TPhysicalDrive*)
+			SystemInfo->PhysicalDrives->Items[i];
+
+		LogicalDrives = "";
+		for (int j = 0; j < SystemInfo->LogicalDrives->Count; j++) {
+			LogicalDrive = (P3tr0viCh::TLogicalDrive*)
+				SystemInfo->LogicalDrives->Items[j];
+
+			if (LogicalDrive->PhysicalDriveNum == i) {
+				LogicalDrives =
+					ConcatStrings(LogicalDrives, String(LogicalDrive->Letter) +
+					":", ", ");
+			}
+		}
+
+		if (IsEmpty(LogicalDrives)) {
+			LogicalDrives =
+				PCInfoStrings->Get(INFO_TEXT_PHYSICAL_DRIVES_NO_LOGICAL_DRIVES);
+		}
 
 		StringListAdd(StringList, 1,
-			Format(F, ARRAYOFCONST((i + 1, PhysicalDrive->Product,
-			FormatBytes(PhysicalDrive->Size, ByteNames)))), UseRusCaptions);
+			Format(S1, ARRAYOFCONST((i + 1, LogicalDrives))));
+
+		StringListAdd(StringList, 2,
+			Format(S2, ARRAYOFCONST((Trim(PhysicalDrive->Product),
+			FormatBytes(PhysicalDrive->Size, ByteNames)))));
 	}
 
+	// ----------- PRINTER ---------------------------------------------------
+
 	if (!IsEmpty(SystemInfo->PrinterName)) {
-		StringListAdd(StringList, 0, UseRusCaptions ? "Принтер" : "Printer",
-			UseRusCaptions);
-		StringListAdd(StringList, 1, SystemInfo->PrinterName, UseRusCaptions);
+		StringListAdd(StringList, 0, PCInfoStrings->Get(INFO_CAPTION_PRINTER));
+		StringListAdd(StringList, 1, SystemInfo->PrinterName);
 	}
 
 	ByteNames->Free();

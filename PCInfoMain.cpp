@@ -11,11 +11,15 @@
 #include "AboutFrm.h"
 
 #include "PCInfoAdd.h"
+#include "PCInfoStrings.h"
 
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TMain *Main;
+
+extern TPCInfoStrings *PCInfoStrings;
+extern P3tr0viCh::TSystemInfo *SystemInfo;
 
 // ---------------------------------------------------------------------------
 __fastcall TMain::TMain(TComponent* Owner) : TForm(Owner) {
@@ -23,7 +27,11 @@ __fastcall TMain::TMain(TComponent* Owner) : TForm(Owner) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TMain::FormCreate(TObject *Sender) {
-	SystemInfo = new P3tr0viCh::TSystemInfo();
+	Caption = PCInfoStrings->Get(MAIN_FORM_TITLE);
+
+	tbtnSave->Caption = PCInfoStrings->Get(BTN_SAVE);
+	tbtnAbout->Caption = PCInfoStrings->Get(BTN_ABOUT);
+	tbtnClose->Caption = PCInfoStrings->Get(BTN_CLOSE);
 
 	UpdateAbout();
 
@@ -41,8 +49,8 @@ void __fastcall TMain::FormKeyPress(TObject *Sender, System::WideChar &Key) {
 void TMain::UpdateAbout() {
 	StatusBar->Panels->Items[0]->Text = "© Дураев К.П., ЦВТС, Уральская Сталь";
 	StatusBar->Panels->Items[1]->Text =
-		"Версия " + GetFileVer(Application->ExeName) + " (" +
-		GetFileVerDate() + ")";
+		Format(PCInfoStrings->Get(STATUS_BAR_VERSION),
+		ARRAYOFCONST((GetFileVer(Application->ExeName), GetFileVerDate())));
 }
 
 // ---------------------------------------------------------------------------
@@ -72,4 +80,5 @@ void __fastcall TMain::tbtnSaveClick(TObject *Sender) {
 void __fastcall TMain::tbtnAboutClick(TObject *Sender) {
 	ShowAbout(16);
 }
+
 // ---------------------------------------------------------------------------

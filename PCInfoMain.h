@@ -39,8 +39,6 @@ __published: // IDE-managed Components
 	void __fastcall tbtnAboutClick(TObject *Sender);
 
 private: // User declarations
-		P3tr0viCh::TSystemInfo *SystemInfo;
-
 	void UpdateAbout();
 	void UpdateInfo();
 

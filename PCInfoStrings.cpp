@@ -21,6 +21,8 @@ __fastcall TPCInfoStrings::TPCInfoStrings(TLanguageId Language) {
 
 		FStrings->Insert(STATUS_BAR_VERSION, "Version %s (%s)");
 
+		FStrings->Insert(TEXT_SAVED_TO_FILE, "Saved to file '%s'");
+
 		FStrings->Insert(BYTES_B, "b");
 		FStrings->Insert(BYTES_KB, "Kb");
 		FStrings->Insert(BYTES_MB, "Mb");
@@ -60,6 +62,8 @@ __fastcall TPCInfoStrings::TPCInfoStrings(TLanguageId Language) {
 		FStrings->Insert(BTN_CLOSE, "Закрыть");
 
 		FStrings->Insert(STATUS_BAR_VERSION, "Версия %s (%s)");
+
+		FStrings->Insert(TEXT_SAVED_TO_FILE, "Сохранено в файл '%s'");
 
 		FStrings->Insert(BYTES_B, "б");
 		FStrings->Insert(BYTES_KB, "Кб");

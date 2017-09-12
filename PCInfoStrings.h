@@ -18,6 +18,8 @@ enum TStringId {
 
 	STATUS_BAR_VERSION,
 
+	TEXT_SAVED_TO_FILE,
+
 	BYTES_B,
 	BYTES_KB,
 	BYTES_MB,

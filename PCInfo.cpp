@@ -38,7 +38,6 @@ void SaveToFile(String FileName) {
 		Strings->SaveToFile(FileName);
 	}
 	__finally {
-		SystemInfo->Free();
 		Strings->Free();
 	}
 }
@@ -49,7 +48,8 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int) {
 		Application->Initialize();
 		Application->MainFormOnTaskBar = true;
 
-		PCInfoStrings = new TPCInfoStrings(FindCmdLineSwitch("E") ?
+		PCInfoStrings =
+			new TPCInfoStrings(FindCmdLineSwitch(CMD_LINE_SWITCH_LANGUAGE_ENG) ?
 			LANGUAGE_ENG : LANGUAGE_DEFAULT);
 
 		SystemInfo = new P3tr0viCh::TSystemInfo();
@@ -57,17 +57,10 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int) {
 		try {
 			Application->Title = PCInfoStrings->Get(APPLICATION_TITLE);
 
-			if (ParamCount() > 0) {
-				String Param = AnsiUpperCase(ParamStr(1));
+			if (FindCmdLineSwitch(CMD_LINE_SWITCH_SAVE_TO_FILE)) {
+				SaveToFile(NULL);
 
-				if ((Param.Length() > 1) && (Param[1] == '/' ||
-					Param[1] == '-')) {
-					if (Param[2] == 'F') {
-						SaveToFile(NULL);
-
-						return 0;
-					}
-				}
+				return 0;
 			}
 
 			Application->CreateForm(__classid(TMain), &Main);

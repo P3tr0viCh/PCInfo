@@ -15,30 +15,44 @@ typedef char _TCHAR;
 #include "UtilsFiles.h"
 
 #include "PCInfoAdd.h"
+#include "PCInfoStrings.h"
+
+TPCInfoStrings *PCInfoStrings;
 
 int _tmain(int argc, _TCHAR* argv[]) {
 	TStrings *Strings = new TStringList();
+
+	PCInfoStrings = new TPCInfoStrings
+		(FindCmdLineSwitch(CMD_LINE_SWITCH_LANGUAGE_ENG) ? LANGUAGE_ENG :
+		LANGUAGE_DEFAULT);
+
 	P3tr0viCh::TSystemInfo *SystemInfo = new P3tr0viCh::TSystemInfo();
 
 	try {
-		SystemInfo->Update();
+		try {
+			SystemInfo->Update();
+		}
+		catch (Exception &exception) {
+			wprintf(L"Exception: %s", exception.Message);
 
-		bool UseRusCaptions = !FindCmdLineSwitch("E");
+			return 100;
+		}
 
-		GetSystemInfo(Strings, SystemInfo, UseRusCaptions);
+		GetSystemInfo(Strings, SystemInfo);
 
 		setlocale(LC_CTYPE, "RUS");
 
-		if (FindCmdLineSwitch("F")) {
+		if (FindCmdLineSwitch(CMD_LINE_SWITCH_SAVE_TO_FILE)) {
 			String FileName =
 				FileInAppDir(SystemInfo->ComputerName + " " + GetDateTimeNow() +
 				".txt");
 
 			Strings->SaveToFile(FileName);
 
-			String S = UseRusCaptions ? "Сохранено в файл" : "Saved to file";
+			String S = Format(PCInfoStrings->Get(TEXT_SAVED_TO_FILE),
+				ARRAYOFCONST((FileName)));
 
-			wprintf(L"%s '%s'", S, FileName);
+			wprintf(L"%s", S);
 
 			return 0;
 		}
@@ -49,6 +63,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	}
 	__finally {
 		SystemInfo->Free();
+		PCInfoStrings->Free();
 		Strings->Free();
 	}
 

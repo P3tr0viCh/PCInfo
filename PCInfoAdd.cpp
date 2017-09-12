@@ -2,6 +2,8 @@
 
 #pragma hdrstop
 
+#include <math.hpp>
+
 #include "PCInfoAdd.h"
 #include "PCInfoStrings.h"
 
@@ -151,8 +153,8 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 		StringListAdd(StringList, 2,
 			Format(S3, ARRAYOFCONST((FormatBytes(LogicalDrive->Total,
 			ByteNames), FormatBytes(LogicalDrive->Free, ByteNames),
-			(int)Round(((Extended) LogicalDrive->Free / (Extended)
-			LogicalDrive->Total) * 100)))));
+			Floor(((Extended) LogicalDrive->Free / (Extended)
+			LogicalDrive->Total) * 100.0)))));
 	}
 
 	// ----------- PHYSICAL DRIVES -------------------------------------------

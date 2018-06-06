@@ -1,8 +1,10 @@
+__astcache
 __history
 *.~*
 *.local
 *.stat
 *.dsk
+*.vlb
 
 # Compiled Object files
 *.slo

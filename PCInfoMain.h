@@ -19,7 +19,7 @@
 
 // ---------------------------------------------------------------------------
 class TMain : public TForm {
-__published: // IDE-managed Components
+__published:
 
 	TStatusBar *StatusBar;
 	TPanel *PanelMain;
@@ -38,13 +38,13 @@ __published: // IDE-managed Components
 	void __fastcall tbtnSaveClick(TObject *Sender);
 	void __fastcall tbtnAboutClick(TObject *Sender);
 
-private: // User declarations
+private:
 	void UpdateAbout();
 	void UpdateInfo();
 
 	void MemoAdd(int Level, String Text);
 
-public: // User declarations
+public:
 	__fastcall TMain(TComponent* Owner);
 };
 

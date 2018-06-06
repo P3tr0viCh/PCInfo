@@ -2,8 +2,8 @@ object Main: TMain
   Left = 0
   Top = 0
   Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1089#1080#1089#1090#1077#1084#1077
-  ClientHeight = 391
-  ClientWidth = 584
+  ClientHeight = 403
+  ClientWidth = 592
   Color = clBtnFace
   Constraints.MinHeight = 430
   Constraints.MinWidth = 600
@@ -21,8 +21,8 @@ object Main: TMain
   TextHeight = 17
   object StatusBar: TStatusBar
     Left = 0
-    Top = 369
-    Width = 584
+    Top = 381
+    Width = 592
     Height = 22
     Panels = <
       item
@@ -35,8 +35,8 @@ object Main: TMain
   object PanelMain: TPanel
     Left = 0
     Top = 60
-    Width = 584
-    Height = 309
+    Width = 592
+    Height = 321
     Align = alClient
     BevelOuter = bvNone
     Caption = 'PanelMain'
@@ -55,8 +55,8 @@ object Main: TMain
     object Memo: TMemo
       Left = 8
       Top = 8
-      Width = 568
-      Height = 293
+      Width = 576
+      Height = 305
       Align = alClient
       Lines.Strings = (
         'Memo')
@@ -68,7 +68,7 @@ object Main: TMain
   object CoolBar: TCoolBar
     Left = 0
     Top = 0
-    Width = 584
+    Width = 592
     Height = 60
     AutoSize = True
     Bands = <
@@ -76,14 +76,14 @@ object Main: TMain
         Control = ToolBar
         ImageIndex = -1
         MinHeight = 56
-        Width = 578
+        Width = 588
       end>
     FixedSize = True
     FixedOrder = True
     object ToolBar: TToolBar
-      Left = 2
+      Left = 0
       Top = 0
-      Width = 578
+      Width = 588
       Height = 56
       AutoSize = True
       ButtonHeight = 56
@@ -120,7 +120,7 @@ object Main: TMain
     Left = 64
     Top = 133
     Bitmap = {
-      494C010103007400980020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103009C009C0020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

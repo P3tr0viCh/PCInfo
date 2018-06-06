@@ -18,8 +18,8 @@
 #pragma resource "*.dfm"
 TMain *Main;
 
-extern TPCInfoStrings *PCInfoStrings;
-extern P3tr0viCh::TSystemInfo *SystemInfo;
+extern TPCInfoStrings * PCInfoStrings;
+extern P3tr0viCh::TSystemInfo * SystemInfo;
 
 // ---------------------------------------------------------------------------
 __fastcall TMain::TMain(TComponent* Owner) : TForm(Owner) {

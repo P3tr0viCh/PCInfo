@@ -10,10 +10,10 @@
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-extern TPCInfoStrings *PCInfoStrings;
+extern TPCInfoStrings * PCInfoStrings;
 
 // ---------------------------------------------------------------------------
-void StringListAdd(TStrings* Strings, int Level, String Text) {
+void StringListAdd(TStrings * Strings, int Level, String Text) {
 	String S = "";
 
 	for (int i = 0; i < Level; i++) {
@@ -31,7 +31,7 @@ void StringListAdd(TStrings* Strings, int Level, String Text) {
 }
 
 // ---------------------------------------------------------------------------
-String WindowsVersion(P3tr0viCh::TSystemInfo *SystemInfo) {
+String WindowsVersion(P3tr0viCh::TSystemInfo * SystemInfo) {
 	String SWindowsProductName = SystemInfo->WindowsProductName;
 	if (IsEmpty(SWindowsProductName)) {
 		return NULL;
@@ -72,7 +72,7 @@ String SystemBoard(P3tr0viCh::TSystemInfo * SystemInfo) {
 void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 	String S1, S2, S3;
 
-	TStrings *ByteNames = new TStringList();
+	TStrings * ByteNames = new TStringList();
 
 	ByteNames->Add(PCInfoStrings->Get(BYTES_B));
 	ByteNames->Add(PCInfoStrings->Get(BYTES_KB));
@@ -130,7 +130,7 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 	StringListAdd(StringList, 0,
 		PCInfoStrings->Get(INFO_CAPTION_LOGICAL_DRIVES));
 
-	P3tr0viCh::TLogicalDrive* LogicalDrive;
+	P3tr0viCh::TLogicalDrive * LogicalDrive;
 
 	S1 = PCInfoStrings->Get(INFO_TEXT_LOGICAL_DRIVES_CAPTION_WITHOUT_NAME);
 	S2 = PCInfoStrings->Get(INFO_TEXT_LOGICAL_DRIVES_CAPTION_WITH_NAME);
@@ -150,11 +150,16 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 				LogicalDrive->Label))));
 		}
 
-		StringListAdd(StringList, 2,
-			Format(S3, ARRAYOFCONST((FormatBytes(LogicalDrive->Total,
-			ByteNames), FormatBytes(LogicalDrive->Free, ByteNames),
-			Floor(((Extended) LogicalDrive->Free / (Extended)
-			LogicalDrive->Total) * 100.0)))));
+		if (LogicalDrive->Total > 0) {
+			StringListAdd(StringList, 2,
+				Format(S3, ARRAYOFCONST((FormatBytes(LogicalDrive->Total,
+				ByteNames), FormatBytes(LogicalDrive->Free, ByteNames),
+				Floor(((Extended) LogicalDrive->Free / (Extended)
+				LogicalDrive->Total) * 100.0)))));
+		}
+		else {
+			StringListAdd(StringList, 2, "");
+		}
 	}
 
 	// ----------- PHYSICAL DRIVES -------------------------------------------
@@ -162,12 +167,13 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 	StringListAdd(StringList, 0,
 		PCInfoStrings->Get(INFO_CAPTION_PHYSICAL_DRIVES));
 
-	P3tr0viCh::TPhysicalDrive* PhysicalDrive;
+	P3tr0viCh::TPhysicalDrive * PhysicalDrive;
 
 	S1 = PCInfoStrings->Get(INFO_TEXT_PHYSICAL_DRIVES_CAPTION);
 	S2 = PCInfoStrings->Get(INFO_TEXT_PHYSICAL_DRIVES_INFO);
 
 	String LogicalDrives;
+	String PhysicalDriveProduct;
 
 	for (int i = 0; i < SystemInfo->PhysicalDrives->Count; i++) {
 		PhysicalDrive = (P3tr0viCh::TPhysicalDrive*)
@@ -193,9 +199,21 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 		StringListAdd(StringList, 1,
 			Format(S1, ARRAYOFCONST((i + 1, LogicalDrives))));
 
-		StringListAdd(StringList, 2,
-			Format(S2, ARRAYOFCONST((Trim(PhysicalDrive->Product),
-			FormatBytes(PhysicalDrive->Size, ByteNames)))));
+		PhysicalDriveProduct = Trim(PhysicalDrive->Product);
+
+		if (PhysicalDrive->Size > 0) {
+			if (IsEmpty(PhysicalDriveProduct)) {
+				PhysicalDriveProduct = PCInfoStrings->Get(INFO_TEXT_UNKNOWN);
+			}
+
+			StringListAdd(StringList, 2,
+				Format(S2, ARRAYOFCONST((PhysicalDriveProduct,
+				FormatBytes(PhysicalDrive->Size, ByteNames)))));
+		}
+		else {
+			StringListAdd(StringList, 2, "");
+
+		}
 	}
 
 	// ----------- PRINTER ---------------------------------------------------

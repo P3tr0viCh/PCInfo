@@ -27,11 +27,11 @@ __fastcall TMain::TMain(TComponent* Owner) : TForm(Owner) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TMain::FormCreate(TObject *Sender) {
-	Caption = PCInfoStrings->Get(MAIN_FORM_TITLE);
+	Caption = PCInfoStrings->Get(siMainFormTitle);
 
-	tbtnSave->Caption = PCInfoStrings->Get(BTN_SAVE);
-	tbtnAbout->Caption = PCInfoStrings->Get(BTN_ABOUT);
-	tbtnClose->Caption = PCInfoStrings->Get(BTN_CLOSE);
+	tbtnSave->Caption = PCInfoStrings->Get(siBtnSave);
+	tbtnAbout->Caption = PCInfoStrings->Get(siBtnAbout);
+	tbtnClose->Caption = PCInfoStrings->Get(siBtnClose);
 
 	UpdateAbout();
 
@@ -49,7 +49,7 @@ void __fastcall TMain::FormKeyPress(TObject *Sender, System::WideChar &Key) {
 void TMain::UpdateAbout() {
 	StatusBar->Panels->Items[0]->Text = "© Дураев К.П., ЦВТС, Уральская Сталь";
 	StatusBar->Panels->Items[1]->Text =
-		Format(PCInfoStrings->Get(STATUS_BAR_VERSION),
+		Format(PCInfoStrings->Get(siStatusBarVersion),
 		ARRAYOFCONST((GetFileVer(Application->ExeName), GetFileVerDate())));
 }
 

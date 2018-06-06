@@ -23,8 +23,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	TStrings *Strings = new TStringList();
 
 	PCInfoStrings = new TPCInfoStrings
-		(FindCmdLineSwitch(CMD_LINE_SWITCH_LANGUAGE_ENG) ? LANGUAGE_ENG :
-		LANGUAGE_DEFAULT);
+		(FindCmdLineSwitch(CMD_LINE_SWITCH_LANGUAGE_ENG) ? liEng : liDefault);
 
 	P3tr0viCh::TSystemInfo *SystemInfo = new P3tr0viCh::TSystemInfo();
 
@@ -49,7 +48,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
 			Strings->SaveToFile(FileName);
 
-			String S = Format(PCInfoStrings->Get(TEXT_SAVED_TO_FILE),
+			String S = Format(PCInfoStrings->Get(siTextSavedToFile),
 				ARRAYOFCONST((FileName)));
 
 			wprintf(L"%s", S);

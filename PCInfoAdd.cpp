@@ -21,7 +21,7 @@ void StringListAdd(TStrings * Strings, int Level, String Text) {
 	}
 
 	if (IsEmpty(Text)) {
-		S += PCInfoStrings->Get(INFO_TEXT_UNKNOWN);
+		S += PCInfoStrings->Get(siInfoTextUnknown);
 	}
 	else {
 		S += Text;
@@ -74,26 +74,26 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 
 	TStrings * ByteNames = new TStringList();
 
-	ByteNames->Add(PCInfoStrings->Get(BYTES_B));
-	ByteNames->Add(PCInfoStrings->Get(BYTES_KB));
-	ByteNames->Add(PCInfoStrings->Get(BYTES_MB));
-	ByteNames->Add(PCInfoStrings->Get(BYTES_GB));
-	ByteNames->Add(PCInfoStrings->Get(BYTES_TB));
+	ByteNames->Add(PCInfoStrings->Get(siBytesB));
+	ByteNames->Add(PCInfoStrings->Get(siBytesKb));
+	ByteNames->Add(PCInfoStrings->Get(siBytesMb));
+	ByteNames->Add(PCInfoStrings->Get(siBytesGb));
+	ByteNames->Add(PCInfoStrings->Get(siBytesTb));
 
 	// ----------- HOST NAME -------------------------------------------------
 
-	StringListAdd(StringList, 0, PCInfoStrings->Get(INFO_CAPTION_HOSTNAME));
+	StringListAdd(StringList, 0, PCInfoStrings->Get(siInfoCaptionHostname));
 	StringListAdd(StringList, 1, SystemInfo->ComputerName);
 
 	// ----------- IP --------------------------------------------------------
 
 	if (SystemInfo->IPAddressList->Count > 1) {
 		StringListAdd(StringList, 0,
-			PCInfoStrings->Get(INFO_CAPTION_IP_ADDRESS_MULTIPLE));
+			PCInfoStrings->Get(siInfoCaptionIpAddressMultiple));
 	}
 	else {
 		StringListAdd(StringList, 0,
-			PCInfoStrings->Get(INFO_CAPTION_IP_ADDRESS_SINGLE));
+			PCInfoStrings->Get(siInfoCaptionIpAddressSingle));
 	}
 	if (SystemInfo->IPAddressList->Count > 0) {
 		for (int i = 0; i < SystemInfo->IPAddressList->Count; i++) {
@@ -103,38 +103,39 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 	else {
 		StringListAdd(StringList, 1, NULL);
 	}
+
 	// ----------- WINDOWS VERSION -------------------------------------------
 
 	StringListAdd(StringList, 0,
-		PCInfoStrings->Get(INFO_CAPTION_WINDOWS_VERSION));
+		PCInfoStrings->Get(siInfoCaptionWindowsVersion));
 	StringListAdd(StringList, 1, WindowsVersion(SystemInfo));
 
 	// ----------- MOTHERBOARD -----------------------------------------------
 
-	StringListAdd(StringList, 0, PCInfoStrings->Get(INFO_CAPTION_MOTHERBOARD));
+	StringListAdd(StringList, 0, PCInfoStrings->Get(siInfoCaptionMotherboard));
 	StringListAdd(StringList, 1, SystemBoard(SystemInfo));
 
 	// ----------- CPU -------------------------------------------------------
 
-	StringListAdd(StringList, 0, PCInfoStrings->Get(INFO_CAPTION_CPU));
+	StringListAdd(StringList, 0, PCInfoStrings->Get(siInfoCaptionCpu));
 	StringListAdd(StringList, 1, SystemInfo->ProcessorName);
 
 	// ----------- RAM -------------------------------------------------------
 
-	StringListAdd(StringList, 0, PCInfoStrings->Get(INFO_CAPTION_RAM));
+	StringListAdd(StringList, 0, PCInfoStrings->Get(siInfoCaptionRam));
 	StringListAdd(StringList, 1, FormatBytes(SystemInfo->PhysMemory,
 		ByteNames));
 
 	// ----------- LOGICAL DRIVES --------------------------------------------
 
 	StringListAdd(StringList, 0,
-		PCInfoStrings->Get(INFO_CAPTION_LOGICAL_DRIVES));
+		PCInfoStrings->Get(siInfoCaptionLogicalDrives));
 
 	P3tr0viCh::TLogicalDrive * LogicalDrive;
 
-	S1 = PCInfoStrings->Get(INFO_TEXT_LOGICAL_DRIVES_CAPTION_WITHOUT_NAME);
-	S2 = PCInfoStrings->Get(INFO_TEXT_LOGICAL_DRIVES_CAPTION_WITH_NAME);
-	S3 = PCInfoStrings->Get(INFO_TEXT_LOGICAL_DRIVES_INFO);
+	S1 = PCInfoStrings->Get(siInfoTextLogicalDrivesCaptionWithoutName);
+	S2 = PCInfoStrings->Get(siInfoTextLogicalDrivesCaptionWithName);
+	S3 = PCInfoStrings->Get(siInfoTextLogicalDrivesInfo);
 
 	for (int i = 0; i < SystemInfo->LogicalDrives->Count; i++) {
 		LogicalDrive = (P3tr0viCh::TLogicalDrive*)
@@ -158,19 +159,19 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 				LogicalDrive->Total) * 100.0)))));
 		}
 		else {
-			StringListAdd(StringList, 2, "");
+			StringListAdd(StringList, 2, NULL);
 		}
 	}
 
 	// ----------- PHYSICAL DRIVES -------------------------------------------
 
 	StringListAdd(StringList, 0,
-		PCInfoStrings->Get(INFO_CAPTION_PHYSICAL_DRIVES));
+		PCInfoStrings->Get(siInfoCaptionPhysicalDrives));
 
 	P3tr0viCh::TPhysicalDrive * PhysicalDrive;
 
-	S1 = PCInfoStrings->Get(INFO_TEXT_PHYSICAL_DRIVES_CAPTION);
-	S2 = PCInfoStrings->Get(INFO_TEXT_PHYSICAL_DRIVES_INFO);
+	S1 = PCInfoStrings->Get(siInfoTextPhysicalDrivesCaption);
+	S2 = PCInfoStrings->Get(siInfoTextPhysicalDrivesInfo);
 
 	String LogicalDrives;
 	String PhysicalDriveProduct;
@@ -193,7 +194,7 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 
 		if (IsEmpty(LogicalDrives)) {
 			LogicalDrives =
-				PCInfoStrings->Get(INFO_TEXT_PHYSICAL_DRIVES_NO_LOGICAL_DRIVES);
+				PCInfoStrings->Get(siInfoTextPhysicalDrivesNoLogicalDrives);
 		}
 
 		StringListAdd(StringList, 1,
@@ -203,7 +204,7 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 
 		if (PhysicalDrive->Size > 0) {
 			if (IsEmpty(PhysicalDriveProduct)) {
-				PhysicalDriveProduct = PCInfoStrings->Get(INFO_TEXT_UNKNOWN);
+				PhysicalDriveProduct = PCInfoStrings->Get(siInfoTextUnknown);
 			}
 
 			StringListAdd(StringList, 2,
@@ -211,7 +212,7 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 				FormatBytes(PhysicalDrive->Size, ByteNames)))));
 		}
 		else {
-			StringListAdd(StringList, 2, "");
+			StringListAdd(StringList, 2, NULL);
 
 		}
 	}
@@ -219,8 +220,27 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 	// ----------- PRINTER ---------------------------------------------------
 
 	if (!IsEmpty(SystemInfo->PrinterName)) {
-		StringListAdd(StringList, 0, PCInfoStrings->Get(INFO_CAPTION_PRINTER));
+		StringListAdd(StringList, 0, PCInfoStrings->Get(siInfoCaptionPhysicalDrives));
 		StringListAdd(StringList, 1, SystemInfo->PrinterName);
+	}
+
+	// ----------- MONITORS --------------------------------------------------
+
+	if (SystemInfo->MonitorList->Count > 1) {
+		StringListAdd(StringList, 0,
+			PCInfoStrings->Get(siInfoCaptionMonitorsMultiple));
+	}
+	else {
+		StringListAdd(StringList, 0,
+			PCInfoStrings->Get(siInfoCaptionMonitorsSingle));
+	}
+	if (SystemInfo->MonitorList->Count > 0) {
+		for (int i = 0; i < SystemInfo->MonitorList->Count; i++) {
+			StringListAdd(StringList, 1, SystemInfo->MonitorList->Strings[i]);
+		}
+	}
+	else {
+		StringListAdd(StringList, 1, NULL);
 	}
 
 	ByteNames->Free();

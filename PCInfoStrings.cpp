@@ -11,86 +11,88 @@ __fastcall TPCInfoStrings::TPCInfoStrings(TLanguageId Language) {
 	FStrings = new TStringList();
 
 	switch (Language) {
-	case LANGUAGE_ENG:
-		FStrings->Insert(APPLICATION_TITLE, "System info");
-		FStrings->Insert(MAIN_FORM_TITLE, "System info");
+	case liEng:
+		FStrings->Insert(siApplicationTitle, "System info");
+		FStrings->Insert(siMainFormTitle, "System info");
 
-		FStrings->Insert(BTN_SAVE, "Save");
-		FStrings->Insert(BTN_ABOUT, "About");
-		FStrings->Insert(BTN_CLOSE, "Close");
+		FStrings->Insert(siBtnSave, "Save");
+		FStrings->Insert(siBtnAbout, "About");
+		FStrings->Insert(siBtnClose, "Close");
 
-		FStrings->Insert(STATUS_BAR_VERSION, "Version %s (%s)");
+		FStrings->Insert(siStatusBarVersion, "Version %s (%s)");
 
-		FStrings->Insert(TEXT_SAVED_TO_FILE, "Saved to file '%s'");
+		FStrings->Insert(siTextSavedToFile, "Saved to file '%s'");
 
-		FStrings->Insert(BYTES_B, "b");
-		FStrings->Insert(BYTES_KB, "Kb");
-		FStrings->Insert(BYTES_MB, "Mb");
-		FStrings->Insert(BYTES_GB, "Gb");
-		FStrings->Insert(BYTES_TB, "Tb");
+		FStrings->Insert(siBytesB, "b");
+		FStrings->Insert(siBytesKb, "Kb");
+		FStrings->Insert(siBytesMb, "Mb");
+		FStrings->Insert(siBytesGb, "Gb");
+		FStrings->Insert(siBytesTb, "Tb");
 
-		FStrings->Insert(INFO_CAPTION_HOSTNAME, "Host name");
-		FStrings->Insert(INFO_CAPTION_IP_ADDRESS_SINGLE, "IP address");
-		FStrings->Insert(INFO_CAPTION_IP_ADDRESS_MULTIPLE, "IP addreses");
-		FStrings->Insert(INFO_CAPTION_WINDOWS_VERSION, "Operating system");
-		FStrings->Insert(INFO_CAPTION_MOTHERBOARD, "Motherboard");
-		FStrings->Insert(INFO_CAPTION_CPU, "CPU");
-		FStrings->Insert(INFO_CAPTION_RAM, "RAM");
-		FStrings->Insert(INFO_CAPTION_LOGICAL_DRIVES, "Logical drives");
-		FStrings->Insert(INFO_CAPTION_PHYSICAL_DRIVES, "Physical drives");
-		FStrings->Insert(INFO_CAPTION_PRINTER, "Printer");
+		FStrings->Insert(siInfoCaptionHostname, "Host name");
+		FStrings->Insert(siInfoCaptionIpAddressSingle, "IP address");
+		FStrings->Insert(siInfoCaptionIpAddressMultiple, "IP addreses");
+		FStrings->Insert(siInfoCaptionWindowsVersion, "Operating system");
+		FStrings->Insert(siInfoCaptionMotherboard, "Motherboard");
+		FStrings->Insert(siInfoCaptionCpu, "CPU");
+		FStrings->Insert(siInfoCaptionRam, "RAM");
+		FStrings->Insert(siInfoCaptionLogicalDrives, "Logical drives");
+		FStrings->Insert(siInfoCaptionPhysicalDrives, "Physical drives");
+		FStrings->Insert(siInfoCaptionPrinter, "Printer");
+		FStrings->Insert(siInfoCaptionMonitorsSingle, "Monitor");
+		FStrings->Insert(siInfoCaptionMonitorsMultiple, "Monitors");
 
-		FStrings->Insert(INFO_TEXT_UNKNOWN, "Unknown");
-		FStrings->Insert(INFO_TEXT_LOGICAL_DRIVES_CAPTION_WITH_NAME,
-			"%s: (%s)");
-		FStrings->Insert(INFO_TEXT_LOGICAL_DRIVES_CAPTION_WITHOUT_NAME, "%s:");
-		FStrings->Insert(INFO_TEXT_LOGICAL_DRIVES_INFO,
+		FStrings->Insert(siInfoTextUnknown, "Unknown");
+		FStrings->Insert(siInfoTextLogicalDrivesCaptionWithName, "%s: (%s)");
+		FStrings->Insert(siInfoTextLogicalDrivesCaptionWithoutName, "%s:");
+		FStrings->Insert(siInfoTextLogicalDrivesInfo,
 			"Total: %s; Free: %s (%d %%)");
-		FStrings->Insert(INFO_TEXT_PHYSICAL_DRIVES_CAPTION, "Drive #%d (%s)");
-		FStrings->Insert(INFO_TEXT_PHYSICAL_DRIVES_INFO, "%s; Total: %s");
-		FStrings->Insert(INFO_TEXT_PHYSICAL_DRIVES_NO_LOGICAL_DRIVES,
+		FStrings->Insert(siInfoTextPhysicalDrivesCaption, "Drive #%d (%s)");
+		FStrings->Insert(siInfoTextPhysicalDrivesInfo, "%s; Total: %s");
+		FStrings->Insert(siInfoTextPhysicalDrivesNoLogicalDrives,
 			"no logical drives");
 
 		break;
-	case LANGUAGE_DEFAULT:
+	case liDefault:
 	default: ;
-		FStrings->Insert(APPLICATION_TITLE, "Информация о системе");
-		FStrings->Insert(MAIN_FORM_TITLE, "Информация о системе");
+		FStrings->Insert(siApplicationTitle, "Информация о системе");
+		FStrings->Insert(siMainFormTitle, "Информация о системе");
 
-		FStrings->Insert(BTN_SAVE, "Сохранить");
-		FStrings->Insert(BTN_ABOUT, "О программе");
-		FStrings->Insert(BTN_CLOSE, "Закрыть");
+		FStrings->Insert(siBtnSave, "Сохранить");
+		FStrings->Insert(siBtnAbout, "О программе");
+		FStrings->Insert(siBtnClose, "Закрыть");
 
-		FStrings->Insert(STATUS_BAR_VERSION, "Версия %s (%s)");
+		FStrings->Insert(siStatusBarVersion, "Версия %s (%s)");
 
-		FStrings->Insert(TEXT_SAVED_TO_FILE, "Сохранено в файл '%s'");
+		FStrings->Insert(siTextSavedToFile, "Сохранено в файл '%s'");
 
-		FStrings->Insert(BYTES_B, "б");
-		FStrings->Insert(BYTES_KB, "Кб");
-		FStrings->Insert(BYTES_MB, "Мб");
-		FStrings->Insert(BYTES_GB, "Гб");
-		FStrings->Insert(BYTES_TB, "Тб");
+		FStrings->Insert(siBytesB, "б");
+		FStrings->Insert(siBytesKb, "Кб");
+		FStrings->Insert(siBytesMb, "Мб");
+		FStrings->Insert(siBytesGb, "Гб");
+		FStrings->Insert(siBytesTb, "Тб");
 
-		FStrings->Insert(INFO_CAPTION_HOSTNAME, "Имя компьютера");
-		FStrings->Insert(INFO_CAPTION_IP_ADDRESS_SINGLE, "IP адрес");
-		FStrings->Insert(INFO_CAPTION_IP_ADDRESS_MULTIPLE, "IP адреса");
-		FStrings->Insert(INFO_CAPTION_WINDOWS_VERSION, "Операционная система");
-		FStrings->Insert(INFO_CAPTION_MOTHERBOARD, "Системная плата");
-		FStrings->Insert(INFO_CAPTION_CPU, "Процессор");
-		FStrings->Insert(INFO_CAPTION_RAM, "Оперативная память");
-		FStrings->Insert(INFO_CAPTION_LOGICAL_DRIVES, "Логические диски");
-		FStrings->Insert(INFO_CAPTION_PHYSICAL_DRIVES, "Физические диски");
-		FStrings->Insert(INFO_CAPTION_PRINTER, "Принтер");
+		FStrings->Insert(siInfoCaptionHostname, "Имя компьютера");
+		FStrings->Insert(siInfoCaptionIpAddressSingle, "IP адрес");
+		FStrings->Insert(siInfoCaptionIpAddressMultiple, "IP адреса");
+		FStrings->Insert(siInfoCaptionWindowsVersion, "Операционная система");
+		FStrings->Insert(siInfoCaptionMotherboard, "Системная плата");
+		FStrings->Insert(siInfoCaptionCpu, "Процессор");
+		FStrings->Insert(siInfoCaptionRam, "Оперативная память");
+		FStrings->Insert(siInfoCaptionLogicalDrives, "Логические диски");
+		FStrings->Insert(siInfoCaptionPhysicalDrives, "Физические диски");
+		FStrings->Insert(siInfoCaptionPrinter, "Принтер");
+		FStrings->Insert(siInfoCaptionMonitorsSingle, "Монитор");
+		FStrings->Insert(siInfoCaptionMonitorsMultiple, "Мониторы");
 
-		FStrings->Insert(INFO_TEXT_UNKNOWN, "Неизвестно");
-		FStrings->Insert(INFO_TEXT_LOGICAL_DRIVES_CAPTION_WITH_NAME,
-			"%s: (%s)");
-		FStrings->Insert(INFO_TEXT_LOGICAL_DRIVES_CAPTION_WITHOUT_NAME, "%s:");
-		FStrings->Insert(INFO_TEXT_LOGICAL_DRIVES_INFO,
+		FStrings->Insert(siInfoTextUnknown, "Неизвестно");
+		FStrings->Insert(siInfoTextLogicalDrivesCaptionWithName, "%s: (%s)");
+		FStrings->Insert(siInfoTextLogicalDrivesCaptionWithoutName, "%s:");
+		FStrings->Insert(siInfoTextLogicalDrivesInfo,
 			"Объём: %s; Свободно: %s (%d %%)");
-		FStrings->Insert(INFO_TEXT_PHYSICAL_DRIVES_CAPTION, "Диск №%d (%s)");
-		FStrings->Insert(INFO_TEXT_PHYSICAL_DRIVES_INFO, "%s; Объём: %s");
-		FStrings->Insert(INFO_TEXT_PHYSICAL_DRIVES_NO_LOGICAL_DRIVES,
+		FStrings->Insert(siInfoTextPhysicalDrivesCaption, "Диск №%d (%s)");
+		FStrings->Insert(siInfoTextPhysicalDrivesInfo, "%s; Объём: %s");
+		FStrings->Insert(siInfoTextPhysicalDrivesNoLogicalDrives,
 			"нет логических дисков");
 	}
 }

@@ -46,16 +46,17 @@ void SaveToFile(String FileName) {
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int) {
 	try {
 		Application->Initialize();
+
 		Application->MainFormOnTaskBar = true;
 
 		PCInfoStrings =
 			new TPCInfoStrings(FindCmdLineSwitch(CMD_LINE_SWITCH_LANGUAGE_ENG) ?
-			LANGUAGE_ENG : LANGUAGE_DEFAULT);
+			liEng : liDefault);
 
 		SystemInfo = new P3tr0viCh::TSystemInfo();
 
 		try {
-			Application->Title = PCInfoStrings->Get(APPLICATION_TITLE);
+			Application->Title = PCInfoStrings->Get(siApplicationTitle);
 
 			if (FindCmdLineSwitch(CMD_LINE_SWITCH_SAVE_TO_FILE)) {
 				SaveToFile(NULL);

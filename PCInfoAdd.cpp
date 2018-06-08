@@ -220,7 +220,7 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 	// ----------- PRINTER ---------------------------------------------------
 
 	if (!IsEmpty(SystemInfo->PrinterName)) {
-		StringListAdd(StringList, 0, PCInfoStrings->Get(siInfoCaptionPhysicalDrives));
+		StringListAdd(StringList, 0, PCInfoStrings->Get(siInfoCaptionPrinter));
 		StringListAdd(StringList, 1, SystemInfo->PrinterName);
 	}
 

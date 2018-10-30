@@ -31,17 +31,29 @@ void StringListAdd(TStrings * Strings, int Level, String Text) {
 }
 
 // ---------------------------------------------------------------------------
-String WindowsVersion(P3tr0viCh::TSystemInfo * SystemInfo) {
-	String SWindowsProductName = SystemInfo->WindowsProductName;
-	if (IsEmpty(SWindowsProductName)) {
+String WindowsVersion(P3tr0viCh::TWindowsVersion * WindowsVersion) {
+	String Result = WindowsVersion->ProductName;
+	if (IsEmpty(Result)) {
 		return NULL;
 	}
 
-	String SWindowsVersion = SystemInfo->IsWindows64Bit ? "x64" : "x32";
+	if (!IsEmpty(WindowsVersion->CSDVersion)) {
+		Result = Result + SPACE + WindowsVersion->CSDVersion;
+	}
 
-	return ConcatStrings(ConcatStrings(SWindowsProductName,
-		SystemInfo->WindowsCSDVersion, SPACE),
-		"(" + SWindowsVersion + ")", SPACE);
+	String SWindowsVersion = WindowsVersion->Is64Bit ? "x64" : "x32";
+
+	Result = Result + SPACE + "[" + SWindowsVersion + "]";
+
+	String Version = ConcatStrings(WindowsVersion->ReleaseId,
+		ConcatStrings(WindowsVersion->CurrentBuild, WindowsVersion->UBR,
+		"."), "-");
+
+	if (!IsEmpty(Version)) {
+		Result = Result + SPACE + "(" + Version + ")";
+	}
+
+	return Result;
 }
 
 // ---------------------------------------------------------------------------
@@ -85,6 +97,12 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 	StringListAdd(StringList, 0, PCInfoStrings->Get(siInfoCaptionHostname));
 	StringListAdd(StringList, 1, SystemInfo->ComputerName);
 
+	// ----------- WINDOWS VERSION -------------------------------------------
+
+	StringListAdd(StringList, 0,
+		PCInfoStrings->Get(siInfoCaptionWindowsVersion));
+	StringListAdd(StringList, 1, WindowsVersion(SystemInfo->WindowsVersion));
+
 	// ----------- IP --------------------------------------------------------
 
 	if (SystemInfo->IPAddressList->Count > 1) {
@@ -103,12 +121,6 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 	else {
 		StringListAdd(StringList, 1, NULL);
 	}
-
-	// ----------- WINDOWS VERSION -------------------------------------------
-
-	StringListAdd(StringList, 0,
-		PCInfoStrings->Get(siInfoCaptionWindowsVersion));
-	StringListAdd(StringList, 1, WindowsVersion(SystemInfo));
 
 	// ----------- MOTHERBOARD -----------------------------------------------
 

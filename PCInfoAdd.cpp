@@ -31,26 +31,52 @@ void StringListAdd(TStrings * Strings, int Level, String Text) {
 }
 
 // ---------------------------------------------------------------------------
-String WindowsVersion(P3tr0viCh::TWindowsVersion * WindowsVersion) {
-	String Result = WindowsVersion->ProductName;
+String WindowsVersion(P3tr0viCh::TSystemInfo * SystemInfo) {
+	String Result = SystemInfo->WindowsVersion->ProductName;
 	if (IsEmpty(Result)) {
 		return NULL;
 	}
 
-	if (!IsEmpty(WindowsVersion->CSDVersion)) {
-		Result = Result + SPACE + WindowsVersion->CSDVersion;
+	if (!IsEmpty(SystemInfo->WindowsVersion->CSDVersion)) {
+		Result = Result + SPACE + SystemInfo->WindowsVersion->CSDVersion;
 	}
 
-	String SWindowsVersion = WindowsVersion->Is64Bit ? "x64" : "x32";
+	String SWindowsVersion = SystemInfo->WindowsVersion->Is64Bit ?
+		"x64" : "x32";
 
 	Result = Result + SPACE + "[" + SWindowsVersion + "]";
 
-	String Version = ConcatStrings(WindowsVersion->ReleaseId,
-		ConcatStrings(WindowsVersion->CurrentBuild, WindowsVersion->UBR,
-		"."), "-");
+	String Version = ConcatStrings(SystemInfo->WindowsVersion->ReleaseId,
+		ConcatStrings(SystemInfo->WindowsVersion->CurrentBuild,
+		SystemInfo->WindowsVersion->UBR, "."), "-");
 
 	if (!IsEmpty(Version)) {
 		Result = Result + SPACE + "(" + Version + ")";
+	}
+
+	return Result;
+}
+
+// ---------------------------------------------------------------------------
+String ProcessorInfo(P3tr0viCh::TSystemInfo * SystemInfo) {
+	String Result = SystemInfo->ProcessorName;
+
+	String ProcessorSocket = P3tr0viCh::FormatProcessorSocket
+		(SystemInfo->ProcessorSocket);
+	if (!IsEmpty(ProcessorSocket)) {
+		Result = Result + SPACE + "[" + ProcessorSocket + "]";
+	}
+
+	return Result;
+}
+
+// ---------------------------------------------------------------------------
+String MemoryInfo(P3tr0viCh::TSystemInfo * SystemInfo, TStrings * ByteNames) {
+	String Result = FormatBytes(SystemInfo->PhysMemory, ByteNames);
+
+	if (SystemInfo->PhysMemoryCount > 0) {
+		Result = Result + "; " + P3tr0viCh::FormatMemoryType
+			(SystemInfo->PhysMemoryType) + " x" + SystemInfo->PhysMemoryCount;
 	}
 
 	return Result;
@@ -101,7 +127,7 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 
 	StringListAdd(StringList, 0,
 		PCInfoStrings->Get(siInfoCaptionWindowsVersion));
-	StringListAdd(StringList, 1, WindowsVersion(SystemInfo->WindowsVersion));
+	StringListAdd(StringList, 1, WindowsVersion(SystemInfo));
 
 	// ----------- IP --------------------------------------------------------
 
@@ -130,13 +156,12 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 	// ----------- CPU -------------------------------------------------------
 
 	StringListAdd(StringList, 0, PCInfoStrings->Get(siInfoCaptionCpu));
-	StringListAdd(StringList, 1, SystemInfo->ProcessorName);
+	StringListAdd(StringList, 1, ProcessorInfo(SystemInfo));
 
 	// ----------- RAM -------------------------------------------------------
 
 	StringListAdd(StringList, 0, PCInfoStrings->Get(siInfoCaptionRam));
-	StringListAdd(StringList, 1, FormatBytes(SystemInfo->PhysMemory,
-		ByteNames));
+	StringListAdd(StringList, 1, MemoryInfo(SystemInfo, ByteNames));
 
 	// ----------- LOGICAL DRIVES --------------------------------------------
 

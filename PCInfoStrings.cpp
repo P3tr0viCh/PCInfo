@@ -54,7 +54,7 @@ __fastcall TPCInfoStrings::TPCInfoStrings(TLanguageId Language) {
 
 		break;
 	case liDefault:
-	default: ;
+	default:
 		FStrings->Insert(siApplicationTitle, "Информация о системе");
 		FStrings->Insert(siMainFormTitle, "Информация о системе");
 

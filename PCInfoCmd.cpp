@@ -12,20 +12,18 @@ typedef char _TCHAR;
 
 #include <SystemInfo.h>
 
-#include "UtilsFiles.h"
-
 #include "PCInfoAdd.h"
 #include "PCInfoStrings.h"
 
-TPCInfoStrings *PCInfoStrings;
+TPCInfoStrings * PCInfoStrings;
 
 int _tmain(int argc, _TCHAR* argv[]) {
-	TStrings *Strings = new TStringList();
+	TStrings * Strings = new TStringList();
 
 	PCInfoStrings = new TPCInfoStrings
 		(FindCmdLineSwitch(CMD_LINE_SWITCH_LANGUAGE_ENG) ? liEng : liDefault);
 
-	P3tr0viCh::TSystemInfo *SystemInfo = new P3tr0viCh::TSystemInfo();
+	P3tr0viCh::TSystemInfo * SystemInfo = new P3tr0viCh::TSystemInfo();
 
 	try {
 		try {
@@ -42,9 +40,10 @@ int _tmain(int argc, _TCHAR* argv[]) {
 		setlocale(LC_CTYPE, "RUS");
 
 		if (FindCmdLineSwitch(CMD_LINE_SWITCH_SAVE_TO_FILE)) {
-			String FileName =
-				FileInAppDir(SystemInfo->ComputerName + " " + GetDateTimeNow() +
-				".txt");
+			String FileName = SystemInfo->ComputerName + " " + GetDateTimeNow()
+				+ ".txt";
+			FileName = IncludeTrailingPathDelimiter
+				(ExtractFilePath(Application->ExeName)) + FileName;
 
 			Strings->SaveToFile(FileName);
 

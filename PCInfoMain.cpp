@@ -47,7 +47,7 @@ void __fastcall TMain::FormKeyPress(TObject *Sender, System::WideChar &Key) {
 
 // ---------------------------------------------------------------------------
 void TMain::UpdateAbout() {
-	StatusBar->Panels->Items[0]->Text = "© Дураев К.П., ЦВТС, Уральская Сталь";
+	StatusBar->Panels->Items[0]->Text = "© Дураев К.П., Уральская Сталь";
 	StatusBar->Panels->Items[1]->Text =
 		Format(PCInfoStrings->Get(siStatusBarVersion),
 		ARRAYOFCONST((GetFileVer(Application->ExeName), GetFileVerDate())));

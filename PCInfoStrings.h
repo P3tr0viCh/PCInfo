@@ -23,7 +23,8 @@ enum TStringId {
 	siBytesB, siBytesKb, siBytesMb, siBytesGb, siBytesTb,
 
 	siInfoCaptionHostname, siInfoCaptionIpAddressSingle,
-	siInfoCaptionIpAddressMultiple, siInfoCaptionWindowsVersion,
+	siInfoCaptionIpAddressMultiple, siInfoCaptionAdapterSingle,
+	siInfoCaptionAdapterMultiple, siInfoCaptionWindowsVersion,
 	siInfoCaptionMotherboard, siInfoCaptionCpu, siInfoCaptionRam,
 	siInfoCaptionLogicalDrives, siInfoCaptionPhysicalDrives,
 	siInfoCaptionPrinter, siInfoCaptionMonitorsSingle,

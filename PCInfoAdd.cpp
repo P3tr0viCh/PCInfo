@@ -17,7 +17,7 @@ void StringListAdd(TStrings * Strings, int Level, String Text) {
 	String S = "";
 
 	for (int i = 0; i < Level; i++) {
-		S += "\t";
+		S += "        ";
 	}
 
 	if (IsEmpty(Text)) {
@@ -59,7 +59,7 @@ String WindowsVersion(P3tr0viCh::TSystemInfo * SystemInfo) {
 
 // ---------------------------------------------------------------------------
 String ProcessorInfo(P3tr0viCh::TSystemInfo * SystemInfo) {
-	String Result = SystemInfo->ProcessorName;
+	String Result = RemoveExtraSpaces(SystemInfo->ProcessorName);
 
 	String ProcessorSocket = P3tr0viCh::FormatProcessorSocket
 		(SystemInfo->ProcessorSocket);
@@ -84,11 +84,11 @@ String MemoryInfo(P3tr0viCh::TSystemInfo * SystemInfo, TStrings * ByteNames) {
 
 // ---------------------------------------------------------------------------
 String SystemBoard(P3tr0viCh::TSystemInfo * SystemInfo) {
-	String SBaseBoard = ConcatStrings(SystemInfo->BaseBoardManufacturer,
-		SystemInfo->BaseBoardProduct, SPACE);
+	String SBaseBoard = ConcatStrings(SystemInfo->SystemBoard->BaseBoardManufacturer,
+		SystemInfo->SystemBoard->BaseBoardProduct, SPACE);
 
-	String SSystemManufacturer = SystemInfo->SystemManufacturer;
-	String SSystemProductName = SystemInfo->SystemProductName;
+	String SSystemManufacturer = SystemInfo->SystemBoard->SystemManufacturer;
+	String SSystemProductName = SystemInfo->SystemBoard->SystemProductName;
 
 	if (AnsiCompareText(SSystemManufacturer, "System Manufacturer") == 0) {
 		SSystemManufacturer = "";
@@ -103,7 +103,7 @@ String SystemBoard(P3tr0viCh::TSystemInfo * SystemInfo) {
 		SBaseBoard = SBaseBoard + SPACE + "(" + SSystem + ")";
 	}
 
-	return SBaseBoard;
+	return RemoveExtraSpaces(SBaseBoard);
 }
 
 // ---------------------------------------------------------------------------
@@ -142,6 +142,33 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 	if (SystemInfo->IPAddressList->Count > 0) {
 		for (int i = 0; i < SystemInfo->IPAddressList->Count; i++) {
 			StringListAdd(StringList, 1, SystemInfo->IPAddressList->Strings[i]);
+		}
+	}
+	else {
+		StringListAdd(StringList, 1, NULL);
+	}
+
+	// ----------- Net Adapters --------------------------------------------------------
+
+	P3tr0viCh::TAdapterInfo * AdapterInfo;
+
+	if (SystemInfo->AdapterInfoList->Count > 1) {
+		StringListAdd(StringList, 0,
+			PCInfoStrings->Get(siInfoCaptionAdapterMultiple));
+	}
+	else {
+		StringListAdd(StringList, 0,
+			PCInfoStrings->Get(siInfoCaptionAdapterSingle));
+	}
+	if (SystemInfo->AdapterInfoList->Count > 0) {
+		for (int i = 0; i < SystemInfo->AdapterInfoList->Count; i++) {
+			AdapterInfo = (P3tr0viCh::TAdapterInfo*)
+				SystemInfo->AdapterInfoList->Items[i];
+
+			StringListAdd(StringList, 1, AdapterInfo->Name);
+			StringListAdd(StringList, 2, AdapterInfo->MACAddress + " (" +
+				AdapterInfo->IPAddress + ") [" + P3tr0viCh::FormatAdapterType
+				(AdapterInfo->Type) + "]");
 		}
 	}
 	else {

@@ -30,8 +30,13 @@ __fastcall TPCInfoStrings::TPCInfoStrings(TLanguageId Language) {
 		FStrings->Insert(siBytesTb, "Tb");
 
 		FStrings->Insert(siInfoCaptionHostname, "Host name");
+
 		FStrings->Insert(siInfoCaptionIpAddressSingle, "IP address");
 		FStrings->Insert(siInfoCaptionIpAddressMultiple, "IP addreses");
+
+		FStrings->Insert(siInfoCaptionAdapterSingle, "Net adapter");
+		FStrings->Insert(siInfoCaptionAdapterMultiple, "Net adapters");
+
 		FStrings->Insert(siInfoCaptionWindowsVersion, "Operating system");
 		FStrings->Insert(siInfoCaptionMotherboard, "Motherboard");
 		FStrings->Insert(siInfoCaptionCpu, "CPU");
@@ -73,10 +78,16 @@ __fastcall TPCInfoStrings::TPCInfoStrings(TLanguageId Language) {
 		FStrings->Insert(siBytesTb, "Тб");
 
 		FStrings->Insert(siInfoCaptionHostname, "Имя компьютера");
+
 		FStrings->Insert(siInfoCaptionIpAddressSingle, "IP адрес");
 		FStrings->Insert(siInfoCaptionIpAddressMultiple, "IP адреса");
+
+		FStrings->Insert(siInfoCaptionAdapterSingle, "Сетевой адаптер");
+		FStrings->Insert(siInfoCaptionAdapterMultiple, "Сетевые адаптеры");
+
 		FStrings->Insert(siInfoCaptionWindowsVersion, "Операционная система");
 		FStrings->Insert(siInfoCaptionMotherboard, "Системная плата");
+
 		FStrings->Insert(siInfoCaptionCpu, "Процессор");
 		FStrings->Insert(siInfoCaptionRam, "Оперативная память");
 		FStrings->Insert(siInfoCaptionLogicalDrives, "Логические диски");

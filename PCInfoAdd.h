@@ -6,6 +6,7 @@
 #include <System.Classes.hpp>
 
 #include "UtilsStr.h"
+#include "UtilsDate.h"
 #include "UtilsMisc.h"
 
 #include "SystemInfo.h"

@@ -30,6 +30,7 @@ __fastcall TPCInfoStrings::TPCInfoStrings(TLanguageId Language) {
 		FStrings->Insert(siBytesTb, "Tb");
 
 		FStrings->Insert(siInfoCaptionHostname, "Host name");
+		FStrings->Insert(siInfoCaptionWindowsUptime, "Uptime");
 
 		FStrings->Insert(siInfoCaptionIpAddressSingle, "IP address");
 		FStrings->Insert(siInfoCaptionIpAddressMultiple, "IP addreses");
@@ -78,6 +79,7 @@ __fastcall TPCInfoStrings::TPCInfoStrings(TLanguageId Language) {
 		FStrings->Insert(siBytesTb, "Тб");
 
 		FStrings->Insert(siInfoCaptionHostname, "Имя компьютера");
+ 		FStrings->Insert(siInfoCaptionWindowsUptime, "Время работы");
 
 		FStrings->Insert(siInfoCaptionIpAddressSingle, "IP адрес");
 		FStrings->Insert(siInfoCaptionIpAddressMultiple, "IP адреса");

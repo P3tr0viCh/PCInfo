@@ -58,6 +58,13 @@ String WindowsVersion(P3tr0viCh::TSystemInfo * SystemInfo) {
 }
 
 // ---------------------------------------------------------------------------
+String WindowsUptime(P3tr0viCh::TSystemInfo * SystemInfo) {
+	TSystemTime Uptime = ExtractHMSFromMS(SystemInfo->WindowsUptime);
+
+	return MyFormatTime(Uptime) + SPACE + "(" + SystemInfo->WindowsBootDateTime + ")"; ;
+}
+
+// ---------------------------------------------------------------------------
 String ProcessorInfo(P3tr0viCh::TSystemInfo * SystemInfo) {
 	String Result = RemoveExtraSpaces(SystemInfo->ProcessorName);
 
@@ -84,7 +91,8 @@ String MemoryInfo(P3tr0viCh::TSystemInfo * SystemInfo, TStrings * ByteNames) {
 
 // ---------------------------------------------------------------------------
 String SystemBoard(P3tr0viCh::TSystemInfo * SystemInfo) {
-	String SBaseBoard = ConcatStrings(SystemInfo->SystemBoard->BaseBoardManufacturer,
+	String SBaseBoard =
+		ConcatStrings(SystemInfo->SystemBoard->BaseBoardManufacturer,
 		SystemInfo->SystemBoard->BaseBoardProduct, SPACE);
 
 	String SSystemManufacturer = SystemInfo->SystemBoard->SystemManufacturer;
@@ -128,6 +136,10 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 	StringListAdd(StringList, 0,
 		PCInfoStrings->Get(siInfoCaptionWindowsVersion));
 	StringListAdd(StringList, 1, WindowsVersion(SystemInfo));
+
+	StringListAdd(StringList, 0,
+		PCInfoStrings->Get(siInfoCaptionWindowsUptime));
+	StringListAdd(StringList, 1, WindowsUptime(SystemInfo));
 
 	// ----------- IP --------------------------------------------------------
 
@@ -290,22 +302,22 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 
 	// ----------- MONITORS --------------------------------------------------
 
-	if (SystemInfo->MonitorList->Count > 1) {
-		StringListAdd(StringList, 0,
-			PCInfoStrings->Get(siInfoCaptionMonitorsMultiple));
-	}
-	else {
-		StringListAdd(StringList, 0,
-			PCInfoStrings->Get(siInfoCaptionMonitorsSingle));
-	}
-	if (SystemInfo->MonitorList->Count > 0) {
-		for (int i = 0; i < SystemInfo->MonitorList->Count; i++) {
-			StringListAdd(StringList, 1, SystemInfo->MonitorList->Strings[i]);
-		}
-	}
-	else {
-		StringListAdd(StringList, 1, NULL);
-	}
+//	if (SystemInfo->MonitorList->Count > 1) {
+//		StringListAdd(StringList, 0,
+//			PCInfoStrings->Get(siInfoCaptionMonitorsMultiple));
+//	}
+//	else {
+//		StringListAdd(StringList, 0,
+//			PCInfoStrings->Get(siInfoCaptionMonitorsSingle));
+//	}
+//	if (SystemInfo->MonitorList->Count > 0) {
+//		for (int i = 0; i < SystemInfo->MonitorList->Count; i++) {
+//			StringListAdd(StringList, 1, SystemInfo->MonitorList->Strings[i]);
+//		}
+//	}
+//	else {
+//		StringListAdd(StringList, 1, NULL);
+//	}
 
 	ByteNames->Free();
 }

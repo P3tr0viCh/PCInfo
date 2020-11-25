@@ -15,7 +15,7 @@
 
 // ---------------------------------------------------------------------------
 USEFORM("PCInfoMain.cpp", Main);
-
+//---------------------------------------------------------------------------
 TPCInfoStrings *PCInfoStrings;
 
 P3tr0viCh::TSystemInfo *SystemInfo;
@@ -65,7 +65,7 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int) {
 			}
 
 			Application->CreateForm(__classid(TMain), &Main);
-			Application->Run();
+		Application->Run();
 		}
 		__finally {
 			SystemInfo->Free();

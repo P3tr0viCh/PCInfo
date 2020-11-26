@@ -59,9 +59,8 @@ String WindowsVersion(P3tr0viCh::TSystemInfo * SystemInfo) {
 
 // ---------------------------------------------------------------------------
 String WindowsUptime(P3tr0viCh::TSystemInfo * SystemInfo) {
-	TSystemTime Uptime = ExtractHMSFromMS(SystemInfo->WindowsUptime);
-
-	return MyFormatTime(Uptime) + SPACE + "(" + SystemInfo->WindowsBootDateTime + ")"; ;
+	return MillisecondsToDateTimeString(SystemInfo->WindowsUptime, false) + SPACE +
+		"(" + SystemInfo->WindowsBootDateTime + ")"; ;
 }
 
 // ---------------------------------------------------------------------------
@@ -302,22 +301,22 @@ void GetSystemInfo(TStrings * StringList, P3tr0viCh::TSystemInfo * SystemInfo) {
 
 	// ----------- MONITORS --------------------------------------------------
 
-//	if (SystemInfo->MonitorList->Count > 1) {
-//		StringListAdd(StringList, 0,
-//			PCInfoStrings->Get(siInfoCaptionMonitorsMultiple));
-//	}
-//	else {
-//		StringListAdd(StringList, 0,
-//			PCInfoStrings->Get(siInfoCaptionMonitorsSingle));
-//	}
-//	if (SystemInfo->MonitorList->Count > 0) {
-//		for (int i = 0; i < SystemInfo->MonitorList->Count; i++) {
-//			StringListAdd(StringList, 1, SystemInfo->MonitorList->Strings[i]);
-//		}
-//	}
-//	else {
-//		StringListAdd(StringList, 1, NULL);
-//	}
+	// if (SystemInfo->MonitorList->Count > 1) {
+	// StringListAdd(StringList, 0,
+	// PCInfoStrings->Get(siInfoCaptionMonitorsMultiple));
+	// }
+	// else {
+	// StringListAdd(StringList, 0,
+	// PCInfoStrings->Get(siInfoCaptionMonitorsSingle));
+	// }
+	// if (SystemInfo->MonitorList->Count > 0) {
+	// for (int i = 0; i < SystemInfo->MonitorList->Count; i++) {
+	// StringListAdd(StringList, 1, SystemInfo->MonitorList->Strings[i]);
+	// }
+	// }
+	// else {
+	// StringListAdd(StringList, 1, NULL);
+	// }
 
 	ByteNames->Free();
 }
